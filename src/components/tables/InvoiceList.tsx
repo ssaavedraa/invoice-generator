@@ -22,7 +22,7 @@ export default function InvoiceList() {
 		},
 		{
 			key: 'price',
-			label: 'PRICE',
+			label: 'PRICE (E.A)',
 		},
 	];
 
