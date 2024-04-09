@@ -6,7 +6,7 @@ export default function CustomerInformation({
 }: {
 	openModal?: (view: string) => void;
 }) {
-	const { customerInformation, updateFormData } = useInvoiceData();
+	const { customerInformation, updateFormData, currentStep } = useInvoiceData();
 
 	return (
 		<div className='min-w-full scroll-snap-align-start'>
@@ -20,6 +20,7 @@ export default function CustomerInformation({
 						size='sm'
 						value={customerInformation.fullname}
 						name='fullname'
+						tabIndex={currentStep === 2 ? 1 : -1}
 						onChange={updateFormData}
 					/>
 					<Input
@@ -29,6 +30,7 @@ export default function CustomerInformation({
 						size='sm'
 						value={customerInformation.abn}
 						name='abn'
+						tabIndex={currentStep === 2 ? 2 : -1}
 						onChange={updateFormData}
 					/>
 				</div>
@@ -39,6 +41,7 @@ export default function CustomerInformation({
 					size='sm'
 					value={customerInformation.address}
 					name='address'
+					tabIndex={currentStep === 2 ? 3 : -1}
 					onClick={() => (openModal ? openModal('address') : () => {})}
 					onChange={updateFormData}
 				/>
@@ -50,6 +53,7 @@ export default function CustomerInformation({
 					value={customerInformation.email}
 					name='email'
 					description='This is the email where we are going to send your invoice'
+					tabIndex={currentStep === 2 ? 4 : -1}
 					onChange={updateFormData}
 				/>
 				<Input
@@ -59,6 +63,7 @@ export default function CustomerInformation({
 					size='sm'
 					value={customerInformation.phoneNumber}
 					name='phoneNumber'
+					tabIndex={currentStep === 2 ? 5 : -1}
 					onChange={updateFormData}
 				/>
 			</form>

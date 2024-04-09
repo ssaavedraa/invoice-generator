@@ -6,7 +6,7 @@ export default function PersonalInformation({
 }: {
 	openModal?: (view: string) => void;
 }) {
-	const { personalInformation, updateFormData } = useInvoiceData();
+	const { personalInformation, updateFormData, currentStep } = useInvoiceData();
 
 	return (
 		<div className='min-w-full scroll-snap-align-start'>
@@ -20,6 +20,7 @@ export default function PersonalInformation({
 						size='sm'
 						value={personalInformation.fullname}
 						name='fullname'
+						tabIndex={currentStep === 1 ? 1 : -1}
 						onChange={updateFormData}
 					/>
 					<Input
@@ -29,6 +30,7 @@ export default function PersonalInformation({
 						size='sm'
 						value={personalInformation.abn}
 						name='abn'
+						tabIndex={currentStep === 1 ? 2 : -1}
 						onChange={updateFormData}
 					/>
 				</div>
@@ -39,6 +41,7 @@ export default function PersonalInformation({
 					size='sm'
 					value={personalInformation.address}
 					name='address'
+					tabIndex={currentStep === 1 ? 3 : -1}
 					onClick={() => (openModal ? openModal('address') : () => {})}
 					onChange={updateFormData}
 				/>
@@ -49,6 +52,7 @@ export default function PersonalInformation({
 					size='sm'
 					value={personalInformation.email}
 					name='email'
+					tabIndex={currentStep === 1 ? 4 : -1}
 					onChange={updateFormData}
 				/>
 				<Input
@@ -58,6 +62,7 @@ export default function PersonalInformation({
 					size='sm'
 					value={personalInformation.phoneNumber}
 					name='phoneNumber'
+					tabIndex={currentStep === 1 ? 5 : -1}
 					onChange={updateFormData}
 				/>
 			</form>

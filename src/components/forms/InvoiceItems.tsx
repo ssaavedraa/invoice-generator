@@ -9,7 +9,7 @@ export default function InvoiceItems({ isActive }: { isActive: boolean }) {
 		{} as InvoiceItem
 	);
 
-	const { invoiceItemList, updateFormData } = useInvoiceData();
+	const { invoiceItemList, updateFormData, currentStep } = useInvoiceData();
 
 	const handleFormDataChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
@@ -41,6 +41,7 @@ export default function InvoiceItems({ isActive }: { isActive: boolean }) {
 					size='sm'
 					value={invoiceItemData.description}
 					name='description'
+					tabIndex={currentStep === 3 ? 1 : -1}
 					onChange={handleFormDataChange}
 				/>
 				<div className='flex flex-row gap-4 items-center'>
@@ -51,6 +52,7 @@ export default function InvoiceItems({ isActive }: { isActive: boolean }) {
 						size='sm'
 						value={invoiceItemData.quantity}
 						name='quantity'
+						tabIndex={currentStep === 3 ? 2 : -1}
 						onChange={handleFormDataChange}
 					/>
 					<Input
@@ -60,10 +62,15 @@ export default function InvoiceItems({ isActive }: { isActive: boolean }) {
 						size='sm'
 						value={invoiceItemData.price}
 						name='price'
+						tabIndex={currentStep === 3 ? 3 : -1}
 						onChange={handleFormDataChange}
 					/>
 				</div>
-				<Button color='primary' onClick={addInvoiceItem}>
+				<Button
+					color='primary'
+					onClick={addInvoiceItem}
+					tabIndex={currentStep === 3 ? 4 : -1}
+				>
 					Add Item
 				</Button>
 			</form>
