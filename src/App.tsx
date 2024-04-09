@@ -72,7 +72,7 @@ function App() {
 				/>
 
 				<section
-					className='overflow-x-scroll w-full overflow-y-hidden'
+					className='overflow-x-hidden w-full overflow-y-hidden'
 					style={{ scrollSnapType: 'x mandatory', scrollBehavior: 'smooth' }}
 					ref={carouselRef}
 				>

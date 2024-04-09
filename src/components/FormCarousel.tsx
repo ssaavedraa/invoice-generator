@@ -12,7 +12,7 @@ export default function FormCarousel({
 	return (
 		<div className='flex flex-row flex-nowrap gap-4'>
 			<PersonalInformation openModal={openModal} />
-			<CustomerInformation />
+			<CustomerInformation openModal={openModal} />
 			<InvoiceItems isActive={currentStep === 3} />
 		</div>
 	);
