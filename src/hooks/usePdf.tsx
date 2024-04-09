@@ -2,6 +2,8 @@ import { generatePDF } from '../utils';
 import { useInvoiceData } from './useInvoiceData';
 
 export const usePdf = () => {
+	const baseUrl = import.meta.env.VITE_API_URL;
+
 	const { personalInformation, customerInformation, invoiceItemList } =
 		useInvoiceData();
 
@@ -49,7 +51,7 @@ ${personalInformation.phoneNumber}
 		formData.append('subject', `Invoice from ${personalInformation.fullname}`);
 		formData.append('body', emailBody);
 
-		fetch('http://localhost:8080/email', {
+		fetch(`${baseUrl}/email`, {
 			method: 'POST',
 			body: formData,
 		})
