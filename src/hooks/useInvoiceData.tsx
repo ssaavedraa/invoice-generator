@@ -19,6 +19,10 @@ export const useInvoiceData = () => {
 	) => {
 		const { name, value } = event?.target ?? {};
 
+		if ((name === 'abn' || name === 'phoneNumber') && isNaN(Number(value))) {
+			return; // Don't update the state
+		}
+
 		switch (currentStep) {
 			case 1:
 				setPersonalInformation((prevState) => ({
