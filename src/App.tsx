@@ -64,7 +64,7 @@ function App() {
 
 	return (
 		<main className='dark text-foreground bg-background bg-opacity-95 w-screen h-screen flex justify-center items-center overflow-x-auto'>
-			<section className='bg-gray-800 bg-opacity-20 p-4 rounded-lg w-1/3 shadow-lg flex flex-col items-center'>
+			<section className='bg-gray-800 bg-opacity-20 p-4 rounded-lg w-[100svw] md:w-1/3 shadow-lg flex flex-col items-center'>
 				<Progress
 					value={(currentStep * 100) / totalSteps}
 					className='max-w-md my-4'
@@ -94,7 +94,12 @@ function App() {
 				</section>
 			</section>
 
-			<Modal isOpen={isOpenModal} className='dark text-foreground'>
+			<Modal
+				isOpen={isOpenModal}
+				onOpenChange={() => setIsOpenModal(false)}
+				className='dark text-foreground max-h-[70vh] overflow-y-auto'
+				scrollBehavior='inside'
+			>
 				{modalContent}
 			</Modal>
 			{/* <iframe className='w-1/2' src={pdfUri} frameBorder='0'></iframe> */}
