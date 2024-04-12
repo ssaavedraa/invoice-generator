@@ -28,7 +28,8 @@ export const generatePDF = ({
 	const margin = 10; // Margin for the content
 
 	// Add header image
-	const imageURL = 'src/assets/logo.png'; // Replace with your image URL
+	const imageURL =
+		'https://s3.amazonaws.com/santiagosaavedra.com.co/Firma-03.png'; // Replace with your image URL
 	const headerHeight = 29; // Height of the header image
 	const headerImageWidth = 85; // Width of the header image
 	doc.addImage(
