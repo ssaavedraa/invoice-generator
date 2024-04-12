@@ -30,13 +30,13 @@ export const generatePDF = ({
 	// Add header image
 	const imageURL =
 		'https://s3.amazonaws.com/santiagosaavedra.com.co/Firma-03.png'; // Replace with your image URL
-	const headerHeight = 29; // Height of the header image
-	const headerImageWidth = 85; // Width of the header image
+	const headerHeight = 36; // Height of the header image
+	const headerImageWidth = headerHeight * (85 / 29); // Width of the header image
 	doc.addImage(
 		imageURL,
 		'JPEG',
 		margin,
-		margin,
+		margin * 1.5,
 		headerImageWidth,
 		headerHeight,
 		'logo.png',
@@ -67,23 +67,51 @@ export const generatePDF = ({
 	doc.text(personalInformation.phoneNumber, headerX, yPos, {
 		align: 'right',
 	});
+	yPos += 5;
+	doc.text('BSB: 063 010 Account Number: 1504 4822', headerX, yPos, {
+		align: 'right',
+	});
 	yPos += 20;
 
 	// Add customer details
-	doc.setFontSize(12);
+	doc.setFontSize(10);
 	doc.setTextColor(0, 0, 0);
-	doc.text(`Customer: ${customerInformation.fullname}`, margin, yPos);
+	doc.text('Invoice For:', margin, yPos);
 	yPos += 10;
+	doc.setFontSize(24);
+	doc.text(`${customerInformation.fullname}`, margin, yPos);
+	yPos += 8;
+	doc.setFontSize(10);
+	doc.setTextColor(161, 161, 170);
 	doc.text(`ABN: ${customerInformation.abn}`, margin, yPos);
-	yPos += 10;
-	doc.text(`Address: ${customerInformation.address}`, margin, yPos);
-	yPos += 10;
-	doc.text(`Email: ${customerInformation.email}`, margin, yPos);
-	yPos += 10;
-	doc.text(`Phone Number: ${customerInformation.phoneNumber}`, margin, yPos);
-	yPos += 20;
+	doc.text(
+		customerInformation.address,
+		doc.internal.pageSize.getWidth() / 2,
+		yPos
+	);
+	yPos += 5;
+	doc.text(customerInformation.email, margin, yPos);
+	doc.text(
+		customerInformation.phoneNumber,
+		doc.internal.pageSize.getWidth() / 2,
+		yPos
+	);
+	doc.setTextColor(0, 0, 0);
+
+	// Draw horizontal line
+	yPos += 8;
+	doc.setFillColor(0, 0, 0);
+	doc.rect(
+		margin,
+		yPos,
+		doc.internal.pageSize.getWidth() - margin * 2,
+		0.5,
+		'FD'
+	);
+	yPos += 8;
 
 	// Define table styling
+	doc.setFillColor(255, 255, 255);
 	const tableHeaders = ['Description', 'Quantity', 'Price'];
 	const colWidth = doc.internal.pageSize.width / tableHeaders.length;
 	const rowHeight = 10;
@@ -122,7 +150,8 @@ export const generatePDF = ({
 	});
 
 	yPos += 20;
-	doc.setFillColor(204, 204, 204); // Light gray
+	doc.setFontSize(12); // Light gray
+	doc.setFont('helvetica', 'bold');
 	doc.text('Total:', margin + colWidth, yPos + cellPadding);
 	doc.text(
 		'$' + getInvoiceTotal().toFixed(2),
