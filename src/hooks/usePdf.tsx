@@ -7,9 +7,16 @@ export const usePdf = () => {
 	const { personalInformation, customerInformation, invoiceItemList } =
 		useInvoiceData();
 
-	const invoiceDate = new Date();
+	const date = new Date();
 
-	const currentDate = `${invoiceDate.getDate()}-${invoiceDate.getMonth()}-${invoiceDate.getFullYear()}`;
+	const day = date.getDate();
+	const month = date.getMonth() + 1; // Months are zero-indexed, so we add 1
+	const year = date.getFullYear();
+
+	const formattedDay = day < 10 ? `0${day}` : day;
+	const formattedMonth = month < 10 ? `0${month}` : month;
+
+	const currentDate = `${formattedDay}/${formattedMonth}/${year}`;
 
 	const amountDue = invoiceItemList.reduce(
 		(acc, item) => acc + +item.quantity * +item.price,
@@ -25,7 +32,6 @@ Attached to this email, please find the invoice provided to you on ${currentDate
 
 Invoice Date: ${currentDate}
 Amount Due: $${amountDue}
-Due Date: ${currentDate}
 
 Please ensure timely payment in accordance with the terms outlined in the invoice. If you have any questions or concerns regarding the invoice, please do not hesitate to contact me at ${personalInformation.email} or ${personalInformation.phoneNumber}.
 
@@ -36,6 +42,8 @@ Best regards,
 ${personalInformation.fullname}
 ${personalInformation.email}
 ${personalInformation.phoneNumber}
+
+*This is an unattended email address, for any inquire please use the contact information provided above.
 `;
 
 	const sendInvoice = () => {
