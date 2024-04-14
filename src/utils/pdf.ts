@@ -17,6 +17,17 @@ export const generatePDF = ({
 	// Create a new jsPDF instance
 	const doc = new jsPDF();
 
+	const date = new Date();
+
+	const day = date.getDate();
+	const month = date.getMonth() + 1; // Months are zero-indexed, so we add 1
+	const year = date.getFullYear();
+
+	const formattedDay = day < 10 ? `0${day}` : day;
+	const formattedMonth = month < 10 ? `0${month}` : month;
+
+	const currentDate = `${formattedDay}/${formattedMonth}/${year}`;
+
 	const getInvoiceTotal = () =>
 		invoiceItemList.reduce(
 			(acc, item) => acc + +item.quantity * +item.price,
@@ -30,13 +41,13 @@ export const generatePDF = ({
 	// Add header image
 	const imageURL =
 		'https://s3.amazonaws.com/santiagosaavedra.com.co/Firma-03.png'; // Replace with your image URL
-	const headerHeight = 36; // Height of the header image
+	const headerHeight = 32; // Height of the header image
 	const headerImageWidth = headerHeight * (85 / 29); // Width of the header image
 	doc.addImage(
 		imageURL,
 		'JPEG',
 		margin,
-		margin * 1.5,
+		margin,
 		headerImageWidth,
 		headerHeight,
 		'logo.png',
@@ -56,10 +67,6 @@ export const generatePDF = ({
 		align: 'right',
 	});
 	yPos += 5;
-	doc.text(personalInformation.address, headerX, yPos, {
-		align: 'right',
-	});
-	yPos += 5;
 	doc.text(personalInformation.email, headerX, yPos, {
 		align: 'right',
 	});
@@ -68,7 +75,7 @@ export const generatePDF = ({
 		align: 'right',
 	});
 	yPos += 5;
-	doc.text('BSB: 063 010 Account Number: 1504 4822', headerX, yPos, {
+	doc.text(personalInformation.address, headerX, yPos, {
 		align: 'right',
 	});
 	yPos += 20;
@@ -83,19 +90,29 @@ export const generatePDF = ({
 	yPos += 8;
 	doc.setFontSize(10);
 	doc.setTextColor(161, 161, 170);
-	doc.text(`ABN: ${customerInformation.abn}`, margin, yPos);
-	doc.text(
-		customerInformation.address,
-		doc.internal.pageSize.getWidth() / 2,
-		yPos
-	);
+
+	if (customerInformation.abn) {
+		doc.text(`ABN: ${customerInformation?.abn}`, margin, yPos);
+	}
+
+	if (customerInformation.address) {
+		doc.text(
+			customerInformation?.address,
+			doc.internal.pageSize.getWidth() / 2,
+			yPos
+		);
+	}
 	yPos += 5;
+
 	doc.text(customerInformation.email, margin, yPos);
-	doc.text(
-		customerInformation.phoneNumber,
-		doc.internal.pageSize.getWidth() / 2,
-		yPos
-	);
+
+	if (customerInformation.phoneNumber) {
+		doc.text(
+			customerInformation?.phoneNumber,
+			doc.internal.pageSize.getWidth() / 2,
+			yPos
+		);
+	}
 	doc.setTextColor(0, 0, 0);
 
 	// Draw horizontal line
@@ -150,7 +167,7 @@ export const generatePDF = ({
 	});
 
 	yPos += 20;
-	doc.setFontSize(12); // Light gray
+	doc.setFontSize(12);
 	doc.setFont('helvetica', 'bold');
 	doc.text('Total:', margin + colWidth, yPos + cellPadding);
 	doc.text(
@@ -158,6 +175,42 @@ export const generatePDF = ({
 		margin + 2 * colWidth + cellPadding,
 		yPos + cellPadding
 	);
+	yPos += 40;
+
+	// invoice number
+	doc.setFontSize(14);
+	doc.setTextColor(0, 0, 0);
+	doc.text('Invoice number:', margin, yPos);
+
+	doc.setFontSize(10);
+	doc.setTextColor(161, 161, 170);
+	yPos += 5;
+	doc.text('INV-0001', margin, yPos);
+	yPos += 15;
+
+	// Invoice date
+	doc.setFontSize(14);
+	doc.setTextColor(0, 0, 0);
+	doc.text('Invoice date:', margin, yPos);
+
+	doc.setFontSize(10);
+	doc.setTextColor(161, 161, 170);
+	yPos += 5;
+	doc.text(currentDate, margin, yPos);
+	yPos += 15;
+
+	// payment details
+
+	doc.setFontSize(14);
+	doc.setTextColor(0, 0, 0);
+	doc.text('Payment details:', margin, yPos);
+
+	doc.setFontSize(10);
+	doc.setTextColor(161, 161, 170);
+	yPos += 5;
+	doc.text('BSB: 063 010', margin, yPos);
+	yPos += 5;
+	doc.text('Account Number: 1504 4822', margin, yPos);
 
 	// setPdfUri(doc.output('datauristring'));
 	const pdfBlob = doc.output('blob');
