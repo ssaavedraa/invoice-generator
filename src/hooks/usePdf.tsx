@@ -33,7 +33,7 @@ Attached to this email, please find the invoice provided to you on ${currentDate
 Invoice Date: ${currentDate}
 Amount Due: $${amountDue}
 
-Please ensure timely payment in accordance with the terms outlined in the invoice. If you have any questions or concerns regarding the invoice, please do not hesitate to contact me at ${personalInformation.email} or ${personalInformation.phoneNumber}.
+If you have any questions or concerns regarding the invoice, please do not hesitate to contact me at ${personalInformation.email} or ${personalInformation.phoneNumber}.
 
 Thank you for your prompt attention to this matter.
 
